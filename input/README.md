@@ -1,0 +1,1 @@
+Place all downloaded images into this folder.
