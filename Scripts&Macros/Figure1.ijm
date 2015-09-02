@@ -34,7 +34,7 @@ var height_a; var height_c; var height_d; var width_a; var width_b;
 openImages();
 
 height_full = height_a + height_filter + height_c + space_c_d + height_d;
-pos_a_x = 0 // round(0.5 * (width_full - width_a - width_b - space_a_b));
+pos_a_x = 0; // round(0.5 * (width_full - width_a - width_b - space_a_b));
 pos_b_x = pos_a_x + width_b + space_a_b;
 offset_c = height_full - height_c - height_d - space_c_d;
 
