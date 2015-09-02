@@ -5,36 +5,43 @@ importClass(Packages.ij.gui.Plot);
 importClass(Packages.ij.gui.Line);
 importClass(Packages.java.awt.Font);
 
-var output_path = IJ.getDirectory("Select the folder to save the output images");
-var data = data();
-
-var xValues = new Array();
-var crSREELS = new Array();
-var feSREELS = new Array();
-var mean = new Array();
-var xOffset = 537;
-var xLimit = 900;
-var j = 0;
-for (var i = 0; i < data.Cr.length; i++) {
-	if (Number(data.Cr[i].x) > xOffset & Number(data.Cr[i].x) < xLimit) {
-		xValues[j] = Number(data.Cr[i].x) - xOffset;
-		crSREELS[j] = Number(data.Cr[i].y);
-		feSREELS[j] = Number(data.Fe[i].y);
-		j++;
+/*
+ * 1.50b is needed to display the plot properly:
+ * https://list.nih.gov/cgi-bin/wa.exe?A1=ind1508&L=IMAGEJ#24
+ */
+if (IJ.versionLessThan("1.50b")) {
+} else {
+	var output_path = IJ.getDirectory("Select the folder to save the output images");
+	var data = data();
+	
+	var xValues = new Array();
+	var crSREELS = new Array();
+	var feSREELS = new Array();
+	var mean = new Array();
+	var xOffset = 537;
+	var xLimit = 900;
+	var j = 0;
+	for (var i = 0; i < data.Cr.length; i++) {
+		if (Number(data.Cr[i].x) > xOffset & Number(data.Cr[i].x) < xLimit) {
+			xValues[j] = Number(data.Cr[i].x) - xOffset;
+			crSREELS[j] = Number(data.Cr[i].y);
+			feSREELS[j] = Number(data.Fe[i].y);
+			j++;
+		}
 	}
+	var plot = new Plot("SR-EELS - Chromium", "lateral position [nm]", "Intensity [a.u.]");
+	stylePlot(plot, xLimit - xOffset);
+	plot.setColor(java.awt.Color.GREEN);
+	// The first parameter "" is needed to use JavaScript arrays.
+	plot.addPoints("", xValues, normToMax(crSREELS), Plot.LINE);
+	plot.setColor(java.awt.Color.RED);
+	plot.addPoints("", xValues, normToMax(feSREELS), Plot.LINE);
+	var imp = plot.makeHighResolution("Figure8", 2, false, false);
+	imp.show();
+	IJ.run("Out [-]", "");
+	IJ.saveAs(imp, "PNG", output_path + "Figure8.png");
 }
-var plot = new Plot("SR-EELS - Chromium", "lateral position [nm]", "Intensity [a.u.]");
-stylePlot(plot, xLimit - xOffset);
-plot.setColor(java.awt.Color.GREEN);
-// The first parameter "" is needed to use JavaScript arrays.
-plot.addPoints("", xValues, normToMax(crSREELS), Plot.LINE);
-plot.setColor(java.awt.Color.RED);
-plot.addPoints("", xValues, normToMax(feSREELS), Plot.LINE);
-var imp = plot.makeHighResolution("Figure8", 2, false, false);
-imp.show();
-IJ.run("Out [-]", "");
-IJ.saveAs(imp, "PNG", output_path + "Figure8.png");
-
+	
 function stylePlot(plot, range) {
 	plot.setFrameSize(650, 400);
 	plot.setLineWidth(2);
