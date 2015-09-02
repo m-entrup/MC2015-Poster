@@ -1,4 +1,5 @@
 *.tif
 *.png
+input/*/*
 
 Thumbs.db
