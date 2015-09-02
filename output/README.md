@@ -1,0 +1,1 @@
+All created images should be saved into this folder.

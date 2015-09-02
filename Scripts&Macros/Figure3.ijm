@@ -1,0 +1,18 @@
+input_path = getDirectory("Select the folder that contains the images");
+output_path = getDirectory("Select the folder to save the output images");
+open(input_path + "QSinK7=-15%\\SR-EELS_SM125_-15%_635eV_B1_90s.tif");
+run("Remove Outliers...", "radius=5 threshold=100 which=Bright");
+run("Remove Outliers...", "radius=5 threshold=100 which=Dark");
+resetMinAndMax();
+run("Enhance Contrast", "saturated=0.35");
+setMinAndMax(0, 512);
+makeRectangle(0, 127, 4096, 3072);
+run("Crop");
+setForegroundColor(255, 255, 255);
+run("Line Width...", "line=8");
+makeLine(140, 1020, getWidth - 140, 1020);
+run("Fill");
+makeLine(950, 1460, getWidth - 140, 1460);
+run("Fill");
+run("Select None");
+saveAs("PNG", output_path + "Figure3.png");
