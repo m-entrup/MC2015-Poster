@@ -33,9 +33,9 @@ if (IJ.versionLessThan("1.50b")) {
 	stylePlot(plot, xLimit - xOffset);
 	plot.setColor(java.awt.Color.GREEN);
 	// The first parameter "" is needed to use JavaScript arrays.
-	plot.addPoints("", xValues, normToMax(crSREELS), Plot.LINE);
+	plot.addPoints(Java.to(xValues, "double[]"), normToMax(crSREELS), Plot.LINE);
 	plot.setColor(java.awt.Color.RED);
-	plot.addPoints("", xValues, normToMax(feSREELS), Plot.LINE);
+	plot.addPoints(Java.to(xValues, "double[]"), normToMax(feSREELS), Plot.LINE);
 	var imp = plot.makeHighResolution("Figure8", 2, false, false);
 	imp.show();
 	IJ.run("Out [-]", "");
@@ -70,7 +70,7 @@ function normToMax(array) {
 		copyOut[i] /= max;
 		if (isNaN(copyOut[i])) copyOut[i] = 0;
 	}
-	return copyOut;
+	return Java.to(copyOut, "double[]");
 }
 
 function sorter(a, b) {
